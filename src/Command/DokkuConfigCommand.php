@@ -50,13 +50,24 @@ php_value[upload_max_filesize] = 100M
 END);
 
 // we don't really need twig,
+        $app = json_decode(file_get_contents($x=__DIR__ . './../../templates/app.json'));
+        $app->name=$name;
+        $app->description="A repo, maybe get this from github";
+        $app->repository="https://github.com/survos-sites/" . $name;
+        file_put_contents($this->projectDir . '/app.json', json_encode($app, JSON_PRETTY_PRINT));
+
         $conf = file_get_contents(__DIR__ . './../../templates/nginx.conf.twig');
         file_put_contents($this->projectDir . '/nginx.conf', $conf);
 
 
         $io->success('dokku:config success.');
 
-        $this->runProcess('git remote add dokku dokku@ssh.survos.com:' . $name);
+        try {
+            $this->runProcess($cmd = 'git remote add dokku dokku@ssh.survos.com:' . $name);
+        } catch (\Exception $exception) {
+            $this->io()->error($cmd);
+            throw new \Exception($exception);
+        }
 
         $io->text("now run dokku config to see the variables. @todo: add secrets");
     }
