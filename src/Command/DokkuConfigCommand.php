@@ -46,15 +46,15 @@ END;
 php_value[memory_limit] = 256M
 php_value[post_max_size] = 100M
 php_value[upload_max_filesize] = 100M
-END);
-
+END
+        );
 
 
 // we don't really need twig,
-        $app = json_decode(file_get_contents($x=__DIR__ . './../../templates/app.json'));
-        $app->name=$name;
-        $app->description="A repo, maybe get this from github";
-        $app->repository="https://github.com/survos-sites/" . $name;
+        $app = json_decode(file_get_contents($x = __DIR__ . './../../templates/app.json'));
+        $app->name = $name;
+        $app->description = "A repo, maybe get this from github";
+        $app->repository = "https://github.com/survos-sites/" . $name;
         file_put_contents($this->projectDir . '/app.json', json_encode($app, JSON_PRETTY_PRINT));
 
         $conf = file_get_contents(__DIR__ . './../../templates/nginx.conf.twig');
@@ -62,26 +62,25 @@ END);
 
         $io->success('dokku:config success.');
 
-        try {
-            $this->runProcess($cmd = 'git remote add dokku dokku@ssh.survos.com:' . $name);
-        } catch (\Exception $exception) {
-            $this->io()->error($cmd);
-//            throw new \Exception($exception);
-        }
+        $this->runCmd($cmd = 'git remote add dokku dokku@ssh.survos.com:' . $name);
         $this->runCmd($cmd = 'bin/console secrets:generate-keys --env=prod');
         $this->runCmd($cmd = 'bin/console secrets:generate-keys');
         $this->runCmd($cmd = 'bin/console secret:set APP_SECRET -r --env=prod');
         $this->runCmd($cmd = 'bin/console secret:set APP_SECRET -r --env=dev');
         $secret = base64_encode(require "config/secrets/prod/prod.decrypt.private.php");
-        $this->runCmd($cmd = "dokku config:set SYMFONY_DECRYPTION_SECRET=$secret APP_ENV=prod --no-restart" );
+        $this->runCmd($cmd = "dokku config:set SYMFONY_DECRYPTION_SECRET=$secret APP_ENV=prod --no-restart");
 
 
         $io->text("now run dokku config to see the variables. @todo: add secrets");
     }
 
-    private function runCmd(string $cmd) {
-        dump($cmd);
+    private function runCmd(string $cmd)
+    {
         $this->io()->write($cmd);
-        $this->runProcess($cmd);
+        try {
+            $this->runProcess($cmd);
+        } catch (\Exception $exception) {
+            $this->io()->error($cmd);
+        }
     }
 }
