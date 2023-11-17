@@ -60,9 +60,10 @@ END
         $conf = file_get_contents(__DIR__ . './../../templates/nginx.conf.twig');
         file_put_contents($this->projectDir . '/nginx.conf', $conf);
 
-        $io->success('dokku:config success.');
+        $io->success('dokku:config files written.');
 
         $this->runCmd($cmd = 'git remote add dokku dokku@ssh.survos.com:' . $name);
+        $this->runCmd($cmd = 'dokku apps:create');
         $this->runCmd($cmd = 'bin/console secrets:generate-keys --env=prod');
         $this->runCmd($cmd = 'bin/console secrets:generate-keys');
         $this->runCmd($cmd = 'bin/console secret:set APP_SECRET -r --env=prod');
