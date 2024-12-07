@@ -18,16 +18,13 @@ use Zenstruck\Console\Attribute\Option;
 #[AsCommand('dokku:config', 'Configure a project for deployment on dukku')]
 final class DokkuConfigCommand extends InvokableServiceCommand
 {
-    use ConfigureWithAttributes;
     use RunsCommands;
     use RunsProcesses;
 
     public function __construct(
-        private KernelInterface $kernel,
         #[Autowire(param: 'kernel.project_dir')] private string $projectDir,
         string $name = null
     ) {
-//        $this->application = new Application($this->kernel);
         parent::__construct($name);
     }
 
@@ -39,7 +36,7 @@ final class DokkuConfigCommand extends InvokableServiceCommand
         // should this be a maker bundle?
         $procfileContents = <<< END
 web:  vendor/bin/heroku-php-nginx -C nginx.conf  -F fpm_custom.conf public/
-release: bin/console importmap:install && bin/console asset-map:compile
+release: bin/console importmap:install && bin/console asset-map:compile && bin/console d:m:m -n --allow-no-migration
 END;
         file_put_contents($this->projectDir . '/Procfile', $procfileContents);
         file_put_contents($this->projectDir . '/fpm_custom.conf', <<<END
@@ -49,13 +46,15 @@ php_value[upload_max_filesize] = 100M
 END
         );
 
+        $composerData = json_decode(file_get_contents('composer.json'));
+        assert($composerData->description, "run composer validate and composer normalize first!");
+        dd($composerData);
 
-// we don't really need twig,
         $app = json_decode(file_get_contents($x = __DIR__ . './../../templates/app.json'));
         $app->name = $name;
         $app->description = "A repo, maybe get this from github";
         $app->repository = "https://github.com/survos-sites/" . $name;
-        file_put_contents($this->projectDir . '/app.json', json_encode($app, JSON_PRETTY_PRINT));
+        file_put_contents($this->projectDir . '/app.json', json_encode($app, JSON_PRETTY_PRINT + JSON_UNESCAPED_SLASHES + JSON_UNESCAPED_UNICODE));
 
         $conf = file_get_contents(__DIR__ . './../../templates/nginx.conf.twig');
         file_put_contents($this->projectDir . '/nginx.conf', $conf);

@@ -24,11 +24,8 @@ class SurvosDeploymentBundle extends AbstractBundle
 //            ->setArgument('$config', $config)
 //            ->addTag('twig.extension');
 
-
-
         $builder->autowire(DokkuConfigCommand::class)
             ->setAutoconfigured(true)
-            ->setArgument('$kernel', new Reference('kernel'))
             ->addTag('console.command');
 
         /*
@@ -42,13 +39,7 @@ class SurvosDeploymentBundle extends AbstractBundle
     {
         $definition->rootNode()
             ->children()
-            ->scalarNode('direction')->defaultValue('LR')->end()
-            ->scalarNode('base_layout')->defaultValue('base.html.twig')->end()
-            ->arrayNode('entities')
-            ->scalarPrototype()
-            ->end()->end()
             ->booleanNode('enabled')->defaultTrue()->end()
-//            ->integerNode('min_sunshine')->defaultValue(3)->end()
             ->end();
     }
 }
