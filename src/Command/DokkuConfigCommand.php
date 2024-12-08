@@ -48,7 +48,6 @@ END
 
         $composerData = json_decode(file_get_contents('composer.json'));
         assert($composerData->description, "run composer validate and composer normalize first!");
-        dd($composerData);
 
         $app = json_decode(file_get_contents($x = __DIR__ . './../../templates/app.json'));
         $app->name = $name;
