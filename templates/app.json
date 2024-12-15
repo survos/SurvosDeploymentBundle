@@ -1,15 +1,15 @@
 {
-    "name": "dt-demo",
-    "description": "A repo, maybe get this from github",
+    "name": "%NAME%",
+    "description": "%DESCRIPTION%",
     "keywords": [
         "php",
         "symfony"
     ],
-    "repository": "https:\/\/github.com\/michaelshobbs\/node-js-sample",
+    "repository": "%REPOSITORY",
     "scripts": {
         "dokku": {
-            "predeploy": "bin\/console importmap:install && bin\/console asset-map:compile",
-            "postdeploy": ""
+            "predeploy": "bin/console importmap:install && bin/console asset-map:compile && bin/console  secrets:decrypt-to-local --force && bin/console doctrine:migrations:migrate -n --allow-no-migration",
+            "postdeploy": "bin/console about"
         }
     },
     "env": {
@@ -22,14 +22,14 @@
             "generator": "echo 5"
         }
     },
-    "image": "gliderlabs\/herokuish",
+    "image": "gliderlabs/herokuish",
     "addons": [
         "dokku-postgres",
         "dokku-redis"
     ],
     "buildpacks": [
         {
-            "url": "https:\/\/github.com\/heroku\/heroku-buildpack-php.git"
+            "url": "https://github.com/heroku/heroku-buildpack-php.git"
         }
     ]
 }

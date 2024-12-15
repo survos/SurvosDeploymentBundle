@@ -38,7 +38,6 @@ final class DokkuConfigCommand extends InvokableServiceCommand
         // should this be a maker bundle?
         $procfileContents = <<< END
 web:  vendor/bin/heroku-php-nginx -C nginx.conf  -F fpm_custom.conf public/
-release: bin/console importmap:install && bin/console asset-map:compile && bin/console doctrine:migrations:migrate -n --allow-no-migration
 END;
         file_put_contents($this->projectDir . '/Procfile', $procfileContents);
         file_put_contents($this->projectDir . '/fpm_custom.conf', <<<END
