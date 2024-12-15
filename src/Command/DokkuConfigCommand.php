@@ -24,7 +24,7 @@ final class DokkuConfigCommand extends InvokableServiceCommand
 
     public function __construct(
         #[Autowire(param: 'kernel.project_dir')] private string $projectDir,
-        string $name = null
+        ?string $name = null
     ) {
         parent::__construct($name);
     }
