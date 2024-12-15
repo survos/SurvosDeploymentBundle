@@ -56,7 +56,7 @@ END
 
         $app = json_decode(file_get_contents($x = __DIR__ . './../../templates/app.json'));
         $app->name = $name;
-        $app->description = "A repo, maybe get this from github";
+        $app->description = $composerData->description;
         $app->repository = "https://github.com/" . $composerData->name;
         file_put_contents($this->projectDir . '/app.json', json_encode($app, JSON_PRETTY_PRINT + JSON_UNESCAPED_SLASHES + JSON_UNESCAPED_UNICODE));
 
@@ -86,7 +86,7 @@ END
 
     private function runCmd(string $cmd): void
     {
-        $this->io()->write($cmd);
+        $this->io()->writeln($cmd);
         if ($this->io()->getOption('force')) {
             try {
                 $this->runProcess($cmd);
