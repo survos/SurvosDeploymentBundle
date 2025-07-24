@@ -68,10 +68,10 @@ END
         $this->runCmd($cmd = 'git remote add dokku dokku@ssh.survos.com:' . $name);
         $this->runCmd($cmd = 'dokku apps:create');
 
-        $this->runCmd($cmd = 'dokku config:set APP_ENV=prod --no-restart');
-        $this->runCmd($cmd = 'dokku config:set REDIS=redis://dokku.survos.com:6379 --no-restart');
-        $this->runCmd($cmd = 'bin/console secrets:generate-keys --env=prod');
-        $this->runCmd($cmd = 'bin/console secrets:generate-keys');
+//        $this->runCmd($cmd = 'dokku config:set APP_ENV=prod --no-restart');
+//        $this->runCmd($cmd = 'dokku config:set REDIS=redis://dokku.survos.com:6379 --no-restart');
+//        $this->runCmd($cmd = 'bin/console secrets:generate-keys --env=prod');
+//        $this->runCmd($cmd = 'bin/console secrets:generate-keys');
 //        $this->runCmd($cmd = 'bin/console secret:set APP_SECRET -r --env=prod');
 //        $this->runCmd($cmd = 'bin/console secret:set APP_SECRET -r --env=dev');
         if ($force) {
