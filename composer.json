@@ -1,4 +1,4 @@
-    {
+{
     "name": "survos/deployment-bundle",
     "keywords": [
         "symfony-ux",
@@ -14,8 +14,8 @@
         "twig/twig": "^3.4",
         "symfony/form": "^6.4 || ^7.1",
         "symfony/console": "^6.4 || ^7.1",
-        "zenstruck/console-extra": "^1.4",
-        "bizkit/versioning-bundle": "^1.2"
+        "bizkit/versioning-bundle": "^1.2",
+        "zenstruck/console-extra": "^1.4"
     },
     "require-dev": {
         "phpstan/phpstan": "^2.0",

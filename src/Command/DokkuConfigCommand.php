@@ -3,24 +3,26 @@
 namespace Survos\DeploymentBundle\Command;
 
 use Symfony\Bundle\FrameworkBundle\Console\Application;
+use Symfony\Component\Console\Attribute\Argument;
 use Symfony\Component\Console\Attribute\AsCommand;
+use Symfony\Component\Console\Attribute\Option;
+use Symfony\Component\Console\Command\Command;
+use Symfony\Component\Console\Style\SymfonyStyle;
 use Symfony\Component\DependencyInjection\Attribute\Autowire;
 use Symfony\Component\HttpKernel\KernelInterface;
 use Twig\Environment;
-use Zenstruck\Console\Attribute\Argument;
 use Zenstruck\Console\ConfigureWithAttributes;
-use Zenstruck\Console\InvokableServiceCommand;
-use Zenstruck\Console\IO;
 use Zenstruck\Console\RunsCommands;
 use Zenstruck\Console\RunsProcesses;
-use Zenstruck\Console\Attribute\Option;
 use function Symfony\Component\String\u;
 
 #[AsCommand('dokku:config', 'Configure a project for deployment on dukku')]
-final class DokkuConfigCommand extends InvokableServiceCommand
+final class DokkuConfigCommand extends Command
 {
     use RunsCommands;
     use RunsProcesses;
+    private bool $force = false;
+    private SymfonyStyle $io;
 
     public function __construct(
         #[Autowire(param: 'kernel.project_dir')] private string $projectDir,
@@ -30,11 +32,13 @@ final class DokkuConfigCommand extends InvokableServiceCommand
     }
 
     public function __invoke(
-        IO $io,
+        SymfonyStyle $io,
         #[Argument(description: 'the repo prefix, e.g. barcode-demo')] ?string $name=null,
         #[Option('force', "actually run the dokku commands")] bool $force=false
     ): void {
 
+        $this->force = $force;
+        $this->io = $io;
         // should this be a maker bundle?
         $procfileContents = <<< END
 web:  vendor/bin/heroku-php-nginx -C nginx.conf  -F fpm_custom.conf public/
@@ -85,12 +89,12 @@ END
 
     private function runCmd(string $cmd): void
     {
-        $this->io()->writeln($cmd);
-        if ($this->io()->getOption('force')) {
+        $this->io->writeln($cmd);
+        if ($this->force) {
             try {
                 $this->runProcess($cmd);
             } catch (\Exception $exception) {
-                $this->io()->error($cmd);
+                $this->io->error($cmd);
             }
         }
     }
