@@ -79,7 +79,7 @@ END
 //        $this->runCmd($cmd = 'bin/console secret:set APP_SECRET -r --env=prod');
 //        $this->runCmd($cmd = 'bin/console secret:set APP_SECRET -r --env=dev');
         if ($force) {
-            //PHP STAN : DON T FLAG THIS
+            /** @phpstan-ignore-next-line */
             $secret = base64_encode(require "config/secrets/prod/prod.decrypt.private.php");
             $this->runCmd($cmd = "dokku config:set SYMFONY_DECRYPTION_SECRET=$secret APP_ENV=prod --no-restart");
         }
