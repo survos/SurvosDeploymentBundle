@@ -8,7 +8,8 @@ use Twig\TwigFunction;
 
 class TwigExtension extends AbstractExtension
 {
-    public function __construct(private array $config)
+    //public function __construct(private array $config)
+    public function __construct()
     {
     }
 
