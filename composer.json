@@ -7,15 +7,13 @@
     "license": "MIT",
     "type": "symfony-bundle",
     "require": {
-        "php": "^8.3",
+        "php": "^8.4",
         "symfony/config": "^7.3",
         "symfony/dependency-injection": "^7.3",
         "symfony/http-kernel": "^7.3",
-        "twig/twig": "^3.4",
+        "twig/twig": "^3.16",
         "symfony/form": "^7.3",
-        "symfony/console": "^7.3",
-        "bizkit/versioning-bundle": "^1.2",
-        "zenstruck/console-extra": "^1.4"
+        "symfony/console": "^7.3"
     },
     "require-dev": {
         "phpstan/phpstan": "^2.0",
@@ -23,7 +21,9 @@
         "symfony/framework-bundle": "^7.3",
         "symfony/phpunit-bridge": "^7.3",
         "symfony/twig-bundle": "^7.3",
-        "symfony/var-dumper": "^7.3"
+        "symfony/var-dumper": "^7.3",
+        "bizkit/versioning-bundle": "^1.2",
+        "zenstruck/console-extra": "^1.4"
     },
     "autoload": {
         "psr-4": {
