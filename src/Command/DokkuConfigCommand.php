@@ -12,15 +12,15 @@ use Symfony\Component\DependencyInjection\Attribute\Autowire;
 use Symfony\Component\HttpKernel\KernelInterface;
 use Twig\Environment;
 use Zenstruck\Console\ConfigureWithAttributes;
-use Zenstruck\Console\RunsCommands;
-use Zenstruck\Console\RunsProcesses;
+//use Zenstruck\Console\RunsCommands;
+//use Zenstruck\Console\RunsProcesses;
 use function Symfony\Component\String\u;
 
 #[AsCommand('dokku:config', 'Configure a project for deployment on dukku')]
 final class DokkuConfigCommand extends Command
 {
-    use RunsCommands;
-    use RunsProcesses;
+    //use RunsCommands;
+    //use RunsProcesses;
     private bool $force = false;
     private SymfonyStyle $io;
 
